@@ -1,0 +1,27 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tarea in Model)
+        {
+            <tr>
+                <td>@tarea.Title</td>
+                <td class="status" data-id="@tarea.Id">@(tarea.IsCompleted ? "Completed" : "Waiting")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@tarea.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-danger">Delete</a>
+                    <form asp-action="" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@tarea.Id" />
+                        <button class="toggle-status btn @(tarea.IsCompleted ? "btn-warning" : "btn-success")" data-id="@tarea.Id">
+                            @(tarea.IsCompleted ? "Mark as pending" : "Mark as completed")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

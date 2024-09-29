@@ -1,55 +1,27 @@
-﻿@model List<TaskManagerCore.Models.Tareas>
-
-@section Scripts {
-    <script src="~/js/tareas.js"></script>
-}
+﻿@model TaskManagerCore.Models.PaginacionViewModel
 
 <h2>To do list</h2>
 
-<form asp-action="Index" method="get" class="d-flex">
+<button id="toggle-dark-mode" class="btn btn-secondary">Dark Mode</button>
 
+
+<div id="tareas-container">
+    @await Html.PartialAsync("_TareasPartial", Model.Tareas) <!-- Esto debe ser correcto -->
+</div>
+
+@section Scripts {
+    <script src="~/js/paginacion.js"></script>
+    <script src="~/js/tareas.js"></script>
+    <script src="~/js/darkMode.js"></script>
+}
+
+<form asp-action="Index" method="get" class="d-flex">
     <input type="Text" name="search" placeholder="Search by task name" class="form-control me-2" />
     <input type="submit" value="search" class="btn btn-primary" />
-
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Task</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tarea in Model)
-
-        {
-            <tr>
-                <td>@tarea.Title</td>
-                <td class="status" data-id="@tarea.Id">@(tarea.IsCompleted ? "Completed" : "Waiting")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@tarea.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-danger">Delete</a>
-
-
-
-                    <form asp-action="" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@tarea.Id" />
-                        <button class="toggle-status btn @(tarea.IsCompleted ? "btn-warning" : "btn-success")" data-id="@tarea.Id">
-                            @(tarea.IsCompleted ? "Mark as pending" : "Mark as completed")
-                        </button>
-
-                    </form>
-
-
-
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
-
-
+<div>
+    @await Html.PartialAsync("_PaginacionPartial", Model.Paginacion) <!-- Asegúrate de que esto también es correcto -->
+</div>
 
 <a asp-controller="Tareas" asp-action="Create" class="btn btn-success">Add new task</a>

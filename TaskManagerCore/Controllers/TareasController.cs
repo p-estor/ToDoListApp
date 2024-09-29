@@ -4,6 +4,7 @@ using TaskManagerCore.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TaskManagerCore.Extensions;
 
 public class TareasController : Controller
 {
@@ -14,17 +15,36 @@ public class TareasController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index(string search)
+    public async Task<IActionResult> Index(string search, int pageNumber = 1, int pageSize = 5)
     {
-        var tareas = from t in _context.Tareas
-                     select t;
+        var tareas = _context.Tareas.AsQueryable();
 
         if (!string.IsNullOrEmpty(search))
         {
             tareas = tareas.Where(s => s.Title.Contains(search));
         }
 
-        return View(await tareas.ToListAsync());
+        var totalItems = await tareas.CountAsync();
+        var paginadas = await tareas.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        var paginacionViewModel = new PaginacionViewModel
+        {
+            Tareas = paginadas,
+            Paginacion = new Paginacion
+            {
+                CurrentPage = pageNumber,
+                TotalItems = totalItems,
+                ItemsPerPage = pageSize
+            }
+        };
+
+        // Si la solicitud es AJAX, devuelve sólo la vista parcial
+        if (Request.IsAjax())
+        {
+            return PartialView("_TareasPartial", paginacionViewModel.Tareas);
+        }
+
+        return View(paginacionViewModel);
     }
 
     public IActionResult Create()

@@ -20,3 +20,33 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.pagination .active .page-link {
+    background-color: #007bff; /* Cambia esto por el color que prefieras */
+    color: white; /* Cambia el color del texto si es necesario */
+}
+
+/* Modo oscuro */
+body.dark-mode {
+    background-color: #121212; /* Fondo oscuro */
+    color: #ffffff; /* Texto claro */
+}
+
+    /*body.dark-mode .btn {
+        background-color: #333;*/ /* Fondo oscuro para los botones */
+        /*color: #fff;*/ /* Texto claro en los botones */
+    /*}*/
+
+    body.dark-mode .table {
+        color: #fff; /* Texto claro en las tablas */
+    }
+
+        body.dark-mode .table .status {
+            color: #fff; /* Asegura que el texto de las tareas se vea bien */
+        }
+
+    /* Estilo para los links de la paginación en modo oscuro */
+    /*body.dark-mode .pagination .page-link {
+        background-color: #444;*/ /* Fondo de los botones de paginación */
+        /*color: #fff;*/ /* Texto claro */
+    /*}*/
